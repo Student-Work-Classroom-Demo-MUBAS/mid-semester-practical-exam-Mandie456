@@ -18,7 +18,7 @@ const availableCourses = [
   { code: "CS404", name: "Computer Networks",         instructor: "Dr. Zhao",  credits: 3, capacity: 30 },
   { code: "CS405", name: "Artificial Intelligence",   instructor: "Dr. Gomez", credits: 3, capacity: 25 }
 ];
-const enrollments = []; // { id, studentName, studentId, courseCode, courseName, semester, reason, enrollmentDate }
+const enrollment = []; // { id, studentName, studentId, courseCode, courseName, semester, reason, enrollmentDate }
 let enrollmentIdCounter = 1;
 
 /* ===== Helpers ===== */
