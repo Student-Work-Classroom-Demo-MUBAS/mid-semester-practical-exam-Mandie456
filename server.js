@@ -123,11 +123,46 @@ app.post('/enroll', (req, res) => {
     });
 
   // 3) Create enrollment object; push; increment id
-  
 
+let enrollments = [];
+let nextEnrollmentId = 1; // Initialize the ID counter
+function createAndAddEnrollment(studentName, courseName) {
+  const newEnrollment = {
+    id: nextEnrollmentId, // Assign the current ID
+    student: studentName,
+    course: courseName
+  };
+
+  enrollments.push(newEnrollment); // Add the object to the array
+  nextEnrollmentId++; // Increment the ID for the next enrollment
+  return newEnrollment; // Return the created object
+}
   // 4) Redirect to /enrollments on success; otherwise show error page with Back link
 
+function handleEnrollment(isSuccess) {
+  if (isSuccess) {
+    // On success, redirect to /enrollments
+    window.location.replace('/enrollments'); 
+  } else {
+    // On error, display error message and a back link
+    const errorContainer = document.getElementById('error-message');
+    errorContainer.textContent = 'Enrollment failed. Please try again.';
 
+    const backLink = document.createElement('a');
+    backLink.href = '#'; // Or a specific URL if desired
+    backLink.textContent = 'Back';
+    backLink.onclick = function() {
+      history.back(); // Navigate back one page in history
+      return false; // Prevent default link behavior
+    };
+    errorContainer.appendChild(backLink);
+  }
+}
+
+// Example usage (replace with your actual logic)
+// Assuming 'someCondition' determines success or failure
+const someCondition = false; // Set to true for success, false for error
+handleEnrollment(someCondition);
   /* Example shape to build (DO NOT UNCOMMENT — for reference only)
   const course = courseByCode(courseCode);
   const newEnroll = {
@@ -139,13 +174,28 @@ app.post('/enroll', (req, res) => {
   res.redirect('/enrollments');
   */
   return res.status(501).send(page('Not Implemented', '<p class="muted">TODO: implement /enroll using req.body</p><p><a href="/">Back</a></p>'));
+
 });
 
 // Unenroll (form POST)
 app.post('/unenroll/:id', (req, res) => {
   // TODO:
   // 1) Parse id from req.params
+      app.post('/unenroll/:id', (req, res) => {
+        const userId = req.params.id;
+
+        // Example: Assuming a 'users' array in memory
+        const initialLength = users.length;
+        users = users.filter(user => user.id !== userId);
+
+        if (users.length < initialLength) {
+            res.status(200).json({ message: `User ${userId} unenrolled successfully.` });
+        } else {
+            res.status(404).json({ error: `User ${userId} not found or already unenrolled.` });
+        }
+    });
   // 2) Remove matching enrollment from array if found
+    const filteredEnrollmentsByCourse = enrollments.filter(enrollment => enrollment.course !== "Math");
   // 3) Redirect back to /enrollments (or show error)
 
   return res.status(501).send(page('Not Implemented', '<p class="muted">TODO: implement /unenroll/:id</p><p><a href="/enrollments">Back</a></p>'));
