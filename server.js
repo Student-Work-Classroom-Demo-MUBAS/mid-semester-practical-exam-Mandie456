@@ -1,6 +1,7 @@
 // === MegaUniversity — Course Enrollment (Starter with TODOs) ===
 const express = require('express');
 const path = require('path');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -97,9 +98,35 @@ app.get('/courses', (req, res) => {
 app.post('/enroll', (req, res) => {
   // TODO:
   // 1) Read fields from req.body: studentName, studentId, courseCode, semester, reason(optional)
+  res.send(studentName, studentId, courseCode, semester, reason(optional));
+    console.log(req.body); // print the form
+});
+    
   // 2) Validate: required fields; studentId matches YYYY-NNNN; course exists
+  const validateStudentFileds = [
+    check('id')
+    .notEmpty().withMessage('id is required')
+    check('age')
+    .notEmpty().withmessage('Age is required')
+
+  ];
+  app.post('/students', validateStudentFields, (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      // If validation passes, process the valid student data
+      const { name, age } = req.body;
+      // ... save student to database or perform other actions
+      res.status(201).send('Student created successfully');
+    });
+
   // 3) Create enrollment object; push; increment id
+  
+
   // 4) Redirect to /enrollments on success; otherwise show error page with Back link
+
 
   /* Example shape to build (DO NOT UNCOMMENT — for reference only)
   const course = courseByCode(courseCode);
